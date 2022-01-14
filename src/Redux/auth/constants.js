@@ -1,0 +1,8 @@
+export const RETRIVE_USER = "RETRIVE_USER";
+export const RETRIVE_USER_SUCESS = "RETRIVE_USER_SUCESS";
+
+
+
+
+
+
