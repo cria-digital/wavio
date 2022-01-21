@@ -9,6 +9,7 @@ import {
   SafeAreaView,
   ImageBackground,
   PermissionsAndroid,
+  ActivityIndicator
 } from 'react-native';
 import {
   Background,
@@ -269,77 +270,74 @@ const AddPhotos = props => {
     );
   };
 
-  return (
-    <SafeAreaView style={{flex: 1, backgroundColor: Background}}>
-      <View style={{flex: 1, backgroundColor: Background, padding: 25}}>
-        <View style={{flex: 10}}>
-          <Text style={styles.titulo}>{t('Adicionar fotos')}</Text>
-          <Text style={styles.descricao}>
-            {t(
-              'Para que as pessoas te conheçam melhor e para uma experíência completa na plataforma adicione algumas fotos suas',
-            )}
-            .
-          </Text>
-          {photos.length == 0 ? (
-            <View style={{alignItems: 'center'}}>
-              <TouchableOpacity
-                style={[styles.addPhotos, {height: 318}]}
-                onPress={() => selecionarEntrada()}>
-                <Icon name="add-outline" size={150} color={'#848484'} />
-              </TouchableOpacity>
+   return (
+      <SafeAreaView style={{flex: 1, backgroundColor: Background}}>
+         <View style={{flex: 1, backgroundColor: Background, padding: 25}}>
+            <View style={{flex: 10}}>
+               <Text style={styles.titulo}>{t('Adicionar fotos')}</Text>
+               <Text style={styles.descricao}>
+                  {t(
+                    'Para que as pessoas te conheçam melhor e para uma experíência completa na plataforma adicione algumas fotos suas',
+                  )}
+                  .
+               </Text>
+               {photos.length == 0 ? (
+                  <View style={{alignItems: 'center'}}>
+                    <TouchableOpacity
+                      style={[styles.addPhotos, {height: 318}]}
+                      onPress={() => selecionarEntrada()}>
+                      <Icon name="add-outline" size={150} color={'#848484'} />
+                    </TouchableOpacity>
+                  </View>
+               ) : (
+               <View style={{alignItems: 'center'}}>
+                 <View style={{height: 270}}>
+                   <Carousel
+                     layout={'stack'}
+                     layoutCardOffset={18}
+                     data={photos}
+                     sliderWidth={300}
+                     itemWidth={300}
+                     renderItem={_renderItem}
+                     useScrollView={true}
+                     onSnapToItem={index => procurarFoto(index)}
+                   />
+                 </View>
+                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                   <BouncyCheckbox
+                     size={22}
+                     fillColor={Primary}
+                     isChecked={checkboxState}
+                     disableBuiltInState={true}
+                     ref={(ref: any) => (bouncyCheckboxRef = ref)}
+                     unfillColor={Background}
+                     iconStyle={{borderColor: Primary}}
+                     onPress={() => fotoDePerfil()}
+                   />
+                   <Text style={styles.fto}>{t('Usar como foto de perfil')}</Text>
+                 </View>
+                 <TouchableOpacity
+                   style={[styles.addPhotos, {height: 90, marginTop: 20}]}
+                   onPress={() => selecionarEntrada()}>
+                   <Icon name="add-outline" size={80} color={'#848484'} />
+                 </TouchableOpacity>
+               </View>
+             )}
             </View>
-          ) : (
-            <View style={{alignItems: 'center'}}>
-              <View style={{height: 270}}>
-                <Carousel
-                  layout={'stack'}
-                  layoutCardOffset={18}
-                  data={photos}
-                  sliderWidth={300}
-                  itemWidth={300}
-                  renderItem={_renderItem}
-                  useScrollView={true}
-                  onSnapToItem={index => procurarFoto(index)}
-                />
-              </View>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <BouncyCheckbox
-                  size={22}
-                  fillColor={Primary}
-                  isChecked={checkboxState}
-                  disableBuiltInState={true}
-                  ref={(ref: any) => (bouncyCheckboxRef = ref)}
-                  unfillColor={Background}
-                  iconStyle={{borderColor: Primary}}
-                  onPress={() => fotoDePerfil()}
-                />
-                <Text style={styles.fto}>{t('Usar como foto de perfil')}</Text>
-              </View>
-              <TouchableOpacity
-                style={[styles.addPhotos, {height: 90, marginTop: 20}]}
-                onPress={() => selecionarEntrada()}>
-                <Icon name="add-outline" size={80} color={'#848484'} />
-              </TouchableOpacity>
+            {
+               loading ? <ActivityIndicator size="small" color={Primary} /> : <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-end'}}>
+               <BackButton press={() => navigation.goBack()} />
+               <GoButton
+                  width={100}
+                  press={() => findProfile()}
+                  disabled={loading}
+               />
             </View>
-          )}
-        </View>
-        <View
-          style={{
-            flex: 1,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'flex-end',
-          }}>
-          <BackButton press={() => navigation.goBack()} />
-          <GoButton
-            width={100}
-            press={() => findProfile()}
-            disabled={loading}
-          />
-        </View>
-      </View>
-    </SafeAreaView>
-  );
+            }
+            
+         </View>
+      </SafeAreaView>
+   );
 };
 
 const styles = StyleSheet.create({

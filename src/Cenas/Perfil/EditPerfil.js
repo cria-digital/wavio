@@ -267,7 +267,6 @@ const EditPerfil = props => {
 
 	const agoraDeleta = (item, index) => {
 		var filtered = photos.filter(value => value !== item);
-
 		item.situacao == 'banco' ? helpersUser.DeletePhoto(item.id).then(e => e ? setPhotos(filtered) : null) : null
 		item.situacao == 'fotoBanco' ? helpersUser.DeletePhoto(item._id).then(e => e ? setPhotos(filtered) : null) : null
 		item.situacao == 'upload' ?  setPhotos(filtered) : null
@@ -608,12 +607,14 @@ const EditPerfil = props => {
 					</View>
 				</View>
 				<View style={{marginHorizontal: 30, paddingTop: 20}}>
-					<SaveCancelBar
+				{
+					loading ? <ActivityIndicator size="small" color={Primary} /> : <SaveCancelBar
 						title={'Salvar'}
 						callback={() => salvarFotos()}
 						press={() => navigation.goBack()}
 						disabled={loading}
 					/>
+				}
 				</View>
 			</ScrollView>
 		</SafeAreaView>
