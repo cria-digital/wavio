@@ -49,7 +49,7 @@ const Welcome = (props) => {
 			if(dropdown !== null || checkboxState !== false){
 				helpersUser.ModifydUser({...props.user, birthdate: birthdate, genre: dropdown})
 				.then(resp => {
-					if(resp => true){
+					if(resp = true){
 						props.retrive_user();
 						navigation.navigate('MyInterests')
 					}else{

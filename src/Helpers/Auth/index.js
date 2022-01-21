@@ -39,6 +39,7 @@ class HelpersAuth {
 			}
 			return user
 		} catch (err) {
+			console.log(err)
 			const error = err.response.data
 			return error
 		}
