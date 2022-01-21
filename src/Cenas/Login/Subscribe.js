@@ -22,7 +22,6 @@ const windowHeight = Dimensions.get('window').height;
 
 const index = ({navigation}) => {
 	const [Email, setEmail] = useState('')
-	const [checkboxState, setCheckboxState] = useState(false);
 	const [viewSenha, setViewSenha] = useState(true)
 	const [viewConfirmSenha, setViewConfirmSenha] = useState(true)
 
@@ -30,21 +29,18 @@ const index = ({navigation}) => {
 
 	const SubscribeHandle = (values) => {
 		helpersAuth.Subscribe(values).then(resp => {
-			if(resp == true){
-				helpersAuth.Login(values.Email, values.confirmPassword).then(response => {
-					if(response?.data?.token){
+			resp ? helpersAuth.Login(values.Email, values.confirmPassword).then(response => {
+				if(response?.data?.token){
 						signIn({
 							username: response.data.user.name, 
 			      		userToken: response.data.token,
 			      		idUser: response.data.user.id
 			   		})
-					}else{
-						alert(response.message)
-					}
-				})
-			}else{
-				alert(response.message)
-			} 
+				}else{
+					console.log('primeiro' + response.message)
+				}
+			})
+		:	console.log('segundo' +response.message)
 		})
    }
 
@@ -58,6 +54,10 @@ const index = ({navigation}) => {
          .string()
          .oneOf([yup.ref('password')], t('As senhas não conferem'))
          .required(t('Confirme sua senha')),
+      checkboxState: yup
+      	.boolean()
+    		.required("The terms and conditions must be accepted.")
+    		.oneOf([true], "The terms and conditions must be accepted.")
    })
 
 	return (
@@ -77,13 +77,14 @@ const index = ({navigation}) => {
 				</ImageBackground>
 				<Formik
 	            validationSchema={cadastroValidationSchema}
-	           	initialValues={{Nome: '', Email: '', password: '', confirmPassword: ''}}
+	           	initialValues={{Nome: '', Email: '', password: '', confirmPassword: '', checkboxState: false}}
 	            onSubmit={values => SubscribeHandle(values)}
 	         >
 	            {({
 	               handleChange,
 	               handleBlur,
 	               handleSubmit,
+	               setFieldValue,
 	               values,
 	               errors,
 	               isValid
@@ -160,28 +161,33 @@ const index = ({navigation}) => {
 	                     :
 	                     values.confirmPassword ? 
 	                     <Text style={styles.acerto}>Senhas conferem</Text>
-	                     : null
-	                      
+	                     : null   
 	                  }
 
-							<View style={{flexDirection: 'row', paddingHorizontal: 20, paddingVertical:10, justifyContent: 'space-between'}}>
+							<View style={{flexDirection: 'row', paddingHorizontal: 20, paddingTop:10, justifyContent: 'space-between'}}>
 						   	<View style={{flex: 1, flexDirection: 'row'}}>
 						   		<View>
 						   			<BouncyCheckbox
 									     	size={20}
 											fillColor={Primary}
+											isChecked={values.checkboxState}
 											unfillColor={Background}
 											iconStyle={{ borderColor: Primary }}
-									      onPress={() => setCheckboxState(!checkboxState) }
+									      onPress={() => setFieldValue('checkboxState', !values.checkboxState) }
 								   	/>
 						   		</View>
-						   		<Text style={styles.txtPonta}>{t("Eu concordo com os")}<Text style={styles.txtTermos}> {t("termos de uso")}</Text>
-						   		</Text>
+						   		<View style={{flex: 3}}>
+						   			<Text style={styles.txtPonta}>{t("Eu concordo com os")}<Text style={styles.txtTermos}> {t("termos de uso")}</Text>
+						   			</Text>
+						   		</View>
 						   	</View>
-						   	<View style={{flex: 1, alignItems: 'flex-end', marginHorizontal: 3}}>
+						   	<View style={{flex: 1, alignItems: 'flex-end'}}>
 						   		<GoButton width={140} title={t("Cadastrar")} press={handleSubmit} valid={!isValid}/>
 						   	</View>
 						   </View>
+						   {errors.checkboxState &&
+	                     <Text style={styles.erros}>{errors.checkboxState}</Text>
+	                  }
 						</View>
 				 	</>
 	           	)}
@@ -193,7 +199,7 @@ const index = ({navigation}) => {
 					<View style={{flexDirection: "row", justifyContent:  "center"}}>
 						<Text style={styles.txtPonta}>{t("Ou se")} </Text>
 						<Text style={styles.txtMeio}> {t("cadastre")} </Text>
-						<Text style={styles.txtPonta}>{("width")}:</Text>
+						<Text style={styles.txtPonta}>{("with")}:</Text>
 					</View>
 					<View style={{flexDirection: "row"}}>
 						<TouchableOpacity style={styles.socialButton}>
