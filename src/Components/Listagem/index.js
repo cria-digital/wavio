@@ -70,8 +70,6 @@ const index = (props) => {
 
 		const result = eventos.data.filter(fruit => fruit.author._id !== props.item.id );
 
-		console.log(result)
-
 		setData(result.reverse())
 	}
 
@@ -178,7 +176,7 @@ const index = (props) => {
 				data={data}
 				renderItem={renderItem}
 				horizontal={true}
-				keyExtractor={(item, index) => index.toString()}
+				keyExtractor={item => item.id}
 			/> 
 		</View>
 	)

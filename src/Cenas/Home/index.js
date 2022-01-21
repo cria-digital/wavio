@@ -191,7 +191,7 @@ const index = (props) => {
 							</Text>
 							<View style={{flexDirection: 'row', paddingHorizontal: 10, paddingTop: 10,  flexWrap: 'wrap'}}>
 								{
-									data.map((item) => { 
+									data.map((item, index) => { 
 										return (
 											<TouchableOpacity 
 												style={[styles.itemMenu, {
@@ -199,6 +199,7 @@ const index = (props) => {
 													borderColor: inter.includes(item.id) ? null : 'white', 
 													borderWidth: inter.includes(item.id) ? null : 1, 
 												}]} 
+												key={item.id}
 												onPress={() => setInteresse(item.id)}>
 												{
 													inter.includes(item.id) ? 
@@ -218,7 +219,7 @@ const index = (props) => {
 							</Text>
 							<View style={{flexDirection: 'row', paddingHorizontal: 10, paddingTop: 10,  flexWrap: 'wrap'}}>
 								{
-									horarios.map((item) => {
+									horarios.map((item, index) => {
 										return (
 											<TouchableOpacity 
 												style={[styles.itemMenu, {
@@ -226,6 +227,7 @@ const index = (props) => {
 													borderColor: hora.includes(item) ? null : 'white', 
 													borderWidth: hora.includes(item) ? null : 1, 
 												}]} 
+												key={index.toString()}
 												onPress={() => setHorario(item)}>
 												{
 													hora.includes(item) ? 
