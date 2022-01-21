@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { ScrollView, Text, FlatList, View, StyleSheet, TouchableOpacity } from 'react-native'
-import { Descricao } from '../Styles'
+import { Descricao, Primary } from '../Styles'
 import moment from "moment";
 
 const Calendar = () => {
 	const [dias, setDias] = useState([]);
 	const [selected, setSelected] = useState()
-	const [dia, setDia] = useState(new Date().getDate())
+	const [dia, setDia] = useState(new Date().getDate()-1)
 
 	useEffect(() => {
 		var today = new Date();
@@ -47,20 +47,23 @@ const Calendar = () => {
 	}
 
 	const getItemLayout = (data, index) => (
-    	{ length: 50, offset: 50 * index, index }
+    	{ length: 60, offset: 60 * index, index }
   	)
 
 	return (
-		<View style={{height: 56, backgroundColor: '#3F3F3F', paddingLeft: 20}}>
-			<FlatList
-				data={dias}
-				renderItem={renderItem}
-				horizontal={true}
-				getItemLayout={getItemLayout}
-				initialScrollIndex={dia}
-				showsHorizontalScrollIndicator={false}
-				keyExtractor={(item) => item}
-			/>
+		<View>
+			<View style={{height: 1, backgroundColor: Primary, marginLeft: 10}} />
+			<View style={{height: 56, backgroundColor: '#3F3F3F'}}>
+				<FlatList
+					data={dias}
+					renderItem={renderItem}
+					horizontal={true}
+					getItemLayout={getItemLayout}
+					initialScrollIndex={dia}
+					showsHorizontalScrollIndicator={false}
+					keyExtractor={(item) => item}
+				/>
+			</View>
 		</View>
 	)
 }
