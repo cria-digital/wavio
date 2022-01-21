@@ -246,7 +246,8 @@ const index = (props) => {
 					</Menu>
 				</View>
 			</View>
-			<View style={{marginTop: 30}}>
+			<View style={{marginTop: 30, flexDirection: 'row'}}>
+				<View style={{height: 56, width: 20, backgroundColor: '#3F3F3F', marginTop: 1}} />
 				<Calendario />
 			</View>
 			

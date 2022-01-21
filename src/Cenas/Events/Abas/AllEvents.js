@@ -62,7 +62,8 @@ const AllEvents = (props) => {
 
 	return (
 		<View style={{flex: 1}}>
-			<View style={{marginVertical: 30}}>
+			<View style={{marginVertical: 30, flexDirection: 'row'}}>
+				<View style={{height: 56, width: 20, backgroundColor: '#3F3F3F', marginTop: 1}} />
 				<Calendario />
 			</View>
 			<View style={{flexDirection: 'row', alignItems: 'center'}}>	
