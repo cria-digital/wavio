@@ -147,18 +147,18 @@ const AddPhotos = props => {
     });
   };
 
-  const findProfile = () => {
-    setLoading(true);
-    if (photos.length > 0) {
-      const result = photos.find(fruit => fruit.profile === true);
-      result !== undefined
-        ? salvarFotos()
-        : (alert(t('Selecione a foto de perfil')), setLoading(false));
-    } else {
-      alert(t('Selecione as suas fotos'));
-      setLoading(false);
-    }
-  };
+   const findProfile = () => {
+      setLoading(true);
+      if (photos.length > 0) {
+         const result = photos.find(fruit => fruit.profile === true);
+         result !== undefined
+           ? salvarFotos()
+           : (alert(t('Selecione a foto de perfil')), setLoading(false));
+      } else {
+         alert(t('Selecione as suas fotos'));
+         setLoading(false);
+      }
+   };
 
   const salvarFotos = () => {
     if (photos.length > 0) {

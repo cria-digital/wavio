@@ -136,7 +136,7 @@ const DetailEvent = (props) => {
 						blurAmount={0.1}
 						reducedTransparencyFallbackColor="white"
 					>
-						<View style={{paddingLeft: 20}}>
+						<View style={{paddingHorizontal: 20}}>
 							<Text style={{fontFamily: Titulo, color: 'white', fontSize: 10, fontWeight: '400'}}>
 						  		{t(item.category.name)}
 							</Text>
@@ -152,7 +152,7 @@ const DetailEvent = (props) => {
 						</View>
 					</BlurView>,
 					android: <View	style={[styles.styleViewBlur, {flex: 1, margin: 30, justifyContent:'center'}]}>
-						<View style={{paddingLeft: 20}}>
+						<View style={{paddingHorizontal: 20}}>
 							<Text style={{fontFamily: Titulo, color: 'white', fontSize: 10, fontWeight: '400'}}>
 						  		{t(item.category.name)}
 							</Text>
