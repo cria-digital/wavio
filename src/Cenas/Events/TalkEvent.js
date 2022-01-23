@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { View, Text, Image, StyleSheet, FlatList, ImageBackground, TextInput, SafeAreaView, TouchableOpacity } from 'react-native'
+import { View, Text, Image, StyleSheet, FlatList, ImageBackground, Alert, Modal, TextInput, SafeAreaView, TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient'
 import { Background, Primary, Descricao } from '../../Styles'
@@ -8,6 +8,11 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from "axios";
 import io from 'socket.io-client';
 import moment from 'moment';
+import SendPhotos from '../../Components/SendPhoto'
+import ImagePicker from 'react-native-image-crop-picker';
+
+import {translate} from '../../Locales';
+const t = translate;
 
 import { HelpersChat, HelpersUser } from "../../Helpers";
 const helpersChat = new HelpersChat();
@@ -16,6 +21,8 @@ const helpersUser = new HelpersUser();
 const TalkEvent = ({navigation}) => {
   	const [message, setMessage] = useState("");
   	const [messages, setMessages] = useState([]);
+  	const [modalVisible, setModalVisible] = useState(false);
+  	const [photos, setPhotos] = useState({});
 
 	const [chat_id, setChatId] = useState("");
 
@@ -102,6 +109,89 @@ const TalkEvent = ({navigation}) => {
   		setMessages((prev) => [...prev, msg]);
   	}
 
+  	const sendMessagePhoto = (legenda) => {
+		helpersChat.SendMessagePhoto({
+			chat: chat_id,
+			content: legenda,
+			images: photos,
+			author: userId
+		}).then(resp => {
+			resp ? console.log('certo') : console.log('errado')
+		})
+	}
+
+  	const selecionarEntrada = () => {
+      Alert.alert(t('Selecione'), t('de onde virá a foto'), [
+         {
+         text: 'Cancel',
+            onPress: () => console.log('Cancel Pressed'),
+            style: 'cancel',
+         },
+         {
+            text: t('Câmera'),
+            onPress: () =>
+               requestCameraPermission().then(resp =>
+                  resp ? captureImage('photo') : null,
+               ),
+         },
+         {text: t('Galeria'), onPress: () => chooseFile('photo')},
+    	]);
+  	};
+
+  	const requestCameraPermission = async () => {
+    if (Platform.OS === 'android') {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.CAMERA,
+          {
+            title: 'Camera Permission',
+            message: 'App needs camera permission',
+          },
+        );
+        // If CAMERA Permission is granted
+        return granted === PermissionsAndroid.RESULTS.GRANTED;
+      } catch (err) {
+        console.warn(err);
+        return false;
+      }
+    } else return true;
+  	};
+
+  const requestExternalWritePermission = async () => {
+    if (Platform.OS === 'android') {
+      try {
+        const granted = await PermissionsAndroid.request(
+          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+          {
+            title: 'External Storage Write Permission',
+            message: 'App needs write permission',
+          },
+        );
+        return granted === PermissionsAndroid.RESULTS.GRANTED;
+      } catch (err) {
+        console.warn(err);
+        alert('Write permission err', err);
+      }
+      return false;
+    } else return true;
+  };
+
+  const captureImage = async type => {
+    	ImagePicker.openCamera({width: 320, height: 180 }).then(image => {
+      	var img = { sourceURL: image.path,	mime: image.mime };
+      	setPhotos(img);
+      	setModalVisible(!modalVisible)
+   	});
+  };
+
+  	const chooseFile = type => {
+    	ImagePicker.openPicker({width: 320, height: 180}).then(images => {
+        	var img = {	sourceURL: images.path,	mime: images.mime };
+      	setPhotos(img);
+      	setModalVisible(!modalVisible)
+    	});
+  	};
+
 	const renderAvatar = () => {
 		return event?.photos?.map((item,index) => {
 			return item.banner ? 
@@ -122,6 +212,12 @@ const TalkEvent = ({navigation}) => {
 				item.author._id == userId ?
 					<View style={{alignSelf: 'flex-end'}}>
 						<View style={styles.myMsg}>
+							{
+								item.images.length > 0 ? <Image
+								  style={{height: 100, width: 100}}
+								  source={{uri: item.images[0]}}
+								/> : null
+							}
 							<Text style={{color: 'black', fontSize: 12, fontFamily: Descricao, fontWeight: '500'}}>
 								{item.content}
 							</Text>
@@ -133,6 +229,12 @@ const TalkEvent = ({navigation}) => {
 				:
 					<View style={{alignSelf: 'flex-start'}}> 
 						<View style={styles.youMsg}>
+							{
+								item.images.length > 0 ? <Image
+								  style={{height: 100, width: 100}}
+								  source={{uri: item.images[0]}}
+								/> : null
+							}
 							<Text style={{color: 'black', fontSize: 12, fontFamily: Descricao, fontWeight: '700'}}>
 								{item.author.name}
 							</Text>	
@@ -183,23 +285,41 @@ const TalkEvent = ({navigation}) => {
 				  	onLayout={() => yourRef.current.scrollToEnd() }
 			   />
 			   <View style={{flexDirection: 'row', height: 82, backgroundColor: Background, alignItems: 'center', paddingHorizontal: 30}}>
-					<TextInput
-						onChangeText={(text) => setMessage(text)}
-						value={message}
-						placeholder='Pesquisar'
-						placeholderTextColor='white'
-						style={{backgroundColor: '#2D2D2D', height: 40, flex: 1, borderRadius: 20, paddingLeft:10, color: 'white'}}
-					/>
+					<View style={{backgroundColor: '#2D2D2D', height: 40, flex: 1, borderRadius: 20, paddingLeft:10, color: 'white', flexDirection: 'row', }}>
+				   	<TextInput
+							onChangeText={(text) => setMessage(text)}
+							value={message}
+							placeholder='Type your message'
+							placeholderTextColor='gray'
+							style={{flex: 1, color: 'white'}}
+							//style={{backgroundColor: '#2D2D2D', height: 40, flex: 1, borderRadius: 20, paddingLeft:10, color: 'white'}}
+						/>
+						<TouchableOpacity style={{justifyContent: 'center', paddingRight:15}} onPress={() => selecionarEntrada()}>
+							<Icon name="attach-outline" size={20} color={'gray'} />
+						</TouchableOpacity>
+				   </View>
 					<TouchableOpacity onPress={() => message !== "" ? handleSendMessage() : null}>
 						<LinearGradient 
 							colors={['#eba358', '#df1884']} 
 							style={{height: 40, width: 40, borderRadius: 20, marginLeft: 10, justifyContent: 'center', alignItems: 'center'}}
 						>
-							<Icon name="send-outline" size={18} color={'white'} />
+							<Icon name="paper-plane-outline" size={18} color={'white'} />
 						</LinearGradient>
 					</TouchableOpacity>
 			   </View>
 			</ImageBackground>
+			<Modal
+		      animationType="slide"
+		      transparent={true}
+		      visible={modalVisible}
+		      onRequestClose={() => {setModalVisible(!modalVisible)}}
+		   >
+		   	<SendPhotos 
+		   		dismiss={() => setModalVisible(!modalVisible)}
+		   		foto={photos}
+		   		send={(legenda) => sendMessagePhoto(legenda)}
+		   	/>
+      	</Modal>
 		</SafeAreaView>
 	)
 }

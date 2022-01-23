@@ -66,6 +66,34 @@ class HelpersChat {
 		}
 	}
 
+	async SendMessagePhoto(value) {
+		try {
+			const config = {
+				headers: {
+					'Content-Type': 'multipart/form-data',
+				},
+			};
+
+			let fd = new FormData();
+
+			fd.append('chat', value.chat);
+			fd.append('content', value.content);
+			fd.append('images', {
+				uri: value.images.sourceURL,
+				type: value.images.mime,
+				name: new Date().toString(),
+			});
+			fd.append('author', value.author);
+
+			const userWithFotos = await api.post('/chats/messages', fd, config);
+			return true;
+		} catch (err) {
+			console.log(err);
+			const error = err.response.data;
+			return false;
+		}
+	}
+
 }
 
 export { HelpersChat };
