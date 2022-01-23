@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, ScrollView,SafeAreaView, StyleSheet, Alert, PermissionsAndroid, TextInput as NativeTextInput, TouchableOpacity, Dimensions, ImageBackground} from 'react-native'
+import { View, Text, ScrollView,SafeAreaView, StyleSheet, ActivityIndicator, Alert, PermissionsAndroid, TextInput as NativeTextInput, TouchableOpacity, Dimensions, ImageBackground} from 'react-native'
 import {Dropdown, MultiSelect} from 'react-native-element-dropdown';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Background, Titulo, CinzaEscuro, Descricao, Placeholder, Primary } from "../../Styles"
@@ -34,22 +34,12 @@ const EditEvent = (props) => {
 	const [location, setLocation] = useState('');
 	const [cords, setCords] = useState();
 	const [predictions, setPredictions] = useState([]);
-	const [photos, setPhotos] = useState([])
+	const [photos, setPhotos] = useState([]);
+	const [loading, setLoading] = useState(false)
 
 
 	const navigation = useNavigation();
 	const route = useRoute();
-
-	{/*useEffect(() => {
-		helpersInterests.GetInterests()
-		.then(response => {
-			const inter = []
-			response.data.forEach(item => {
-  				inter.push({value: item.id, label: item.name})
-  			})
-  			setInterests(inter)
-		})
-	}, []) */}
 
 	useEffect(() => {
 		setTitulo(route.params.item.title)
@@ -170,6 +160,7 @@ const EditEvent = (props) => {
 
 
 	const editEvent = () => {
+		setLoading(true)
 		helpersEvents.EditEvent({
 			...route.params.item,
 			title: titulo,
@@ -182,7 +173,8 @@ const EditEvent = (props) => {
 			if(resp == true){
 				salvarFotos() 
 			}else {
-			 	alert(resp.message)
+			 	alert(resp.message);
+			 	setLoading(false)
 			}
 		})
 	}
@@ -196,12 +188,14 @@ const EditEvent = (props) => {
 				   itemsProcessed++;
 				   if(itemsProcessed === array.length) {
 				     helpersEvents.GetEventId(route.params.item.id).then(resp => 
-				     	navigation.navigate('DetailEvent', { item: resp.data}))
+				     	navigation.navigate('DetailEvent', { item: resp.data}));
+				     setLoading(false)
 				   }
 				});
 			});
 		} else {
 			alert(t('Selecione as suas fotos'));
+			setLoading(false)
 		}
 	};
 
@@ -456,10 +450,12 @@ const EditEvent = (props) => {
 
 
 			<View style={{marginHorizontal: 30, paddingTop: 20}}>
-				<SaveCancelBar 
-      			title={"Finalizar"} callback={() => editEvent()} 
-      			press={() => navigation.goBack()}
-      		/>
+				{
+					loading ? <ActivityIndicator size="small" color={Primary} /> : <SaveCancelBar 
+      				title={"Finalizar"} callback={() => editEvent()} 
+      				press={() => navigation.goBack()}
+      			/>
+				}
 			</View>
 		</ScrollView>
 		</SafeAreaView>

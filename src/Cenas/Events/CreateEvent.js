@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import {Alert, PermissionsAndroid, View, Dimensions, ImageBackground, Text, ScrollView,SafeAreaView, StyleSheet, TextInput as NativeTextInput, TouchableOpacity} from 'react-native'
+import {Alert, PermissionsAndroid, View, Dimensions, ImageBackground, Text, ScrollView,SafeAreaView, ActivityIndicator, StyleSheet, TextInput as NativeTextInput, TouchableOpacity} from 'react-native'
 import {Dropdown, MultiSelect} from 'react-native-element-dropdown';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Background, Titulo, CinzaEscuro, Descricao, Placeholder, Primary } from "../../Styles"
@@ -35,7 +35,8 @@ const index = (props) => {
 	const [location, setLocation] = useState('')
 	const [predictions, setPredictions] = useState([]);
 	const [cords, setCords] = useState(null)
-	const [photos, setPhotos] = useState([])
+	const [photos, setPhotos] = useState([]);
+	const [loading, setLoading] = useState(false)
 
 	const navigation = useNavigation();
 
@@ -144,11 +145,13 @@ const index = (props) => {
 	};
 
 	const findProfile = () => {
+		setLoading(true)
    	if(photos.length > 0){
    		const result = photos.find(fruit => fruit.banner === true );
-   		result !== undefined ? saveEvent() : alert(t('Selecione o banner do evento'))
+   		result !== undefined ? saveEvent() : (alert(t('Selecione o banner do evento')), setLoading(false))
    	}else{
-   		alert(t('Selecione as suas fotos'))
+   		alert(t('Selecione as suas fotos'));
+   		setLoading(false)
    	}
    }
 
@@ -163,7 +166,7 @@ const index = (props) => {
 			category: dropdown,
 			author: props.user.id
 		}).then((resp) => { 
-			resp.id ? salvarFotos(resp.id) : alert(resp.message)
+			resp.id ? salvarFotos(resp.id) : (alert(resp.message), setLoading(false))
 		})
 	}
 
@@ -180,12 +183,14 @@ const index = (props) => {
 				   itemsProcessed++;
 				   if(itemsProcessed === array.length) {
 				     	navigation.push('Eventos');
-						alert('Evento criado com sucesso!')
+						alert('Evento criado com sucesso!');
+						setLoading(false)
 				   }
 				});
 			});
 		}else{
-			alert(t('Selecione as suas fotos'))
+			alert(t('Selecione as suas fotos'));
+			setLoading(false)
 		}
 	} 
 
@@ -241,7 +246,7 @@ const index = (props) => {
 						<TouchableOpacity
 							style={{	width: '25%', alignItems: 'center',	paddingHorizontal: 7, paddingBottom: 15}}
 							onPress={() => item.enviar ? selecionarEntrada() : setarFotoBanner(item, index)}
-							key={item.id}>
+							key={index.toString()}>
 							<ImageBackground
 								source={{uri: item.sourceURL}}
 								style={{width: '100%',	height: 67,	justifyContent: 'flex-end'}}
@@ -402,11 +407,13 @@ const index = (props) => {
 			</View>
 
 			<View style={{marginHorizontal: 30, paddingTop: 20}}>
-				<SaveCancelBar 
-      			title={"Finalizar"} 
-      			callback={() => findProfile()} 
-      			press={() => navigation.goBack()}
-      		/>
+				{
+					loading ? <ActivityIndicator size="small" color={Primary} /> : <SaveCancelBar 
+      				title={"Finalizar"} 
+      				callback={() => findProfile()} 
+      				press={() => navigation.goBack()}
+      			/>
+				}
 			</View>
 
 		</ScrollView>
