@@ -6,6 +6,7 @@ import { BlurView, VibrancyView } from "@react-native-community/blur";
 import { CinzaEscuro, Placeholder, Primary, Descricao, Titulo } from '../../../Styles'
 import Listagem from '../../../Components/Listagem'
 import Calendario from '../../../Components/Calendar'
+import ListSearch from '../../../Components/Listagem/ListSearch'
 
 import { translate } from '../../../Locales'
 const t = translate
@@ -24,16 +25,29 @@ const AllEvents = (props) => {
 	const [refresh, setRefresh] = useState(false);
 	const [inter, setInter] = useState([]);
 	const [horarios, sethorarios] = useState([
-		'Qualquer horário', 'Manhã', 'Tarde', 'Noite'
+		t('Qualquer horário'), t('Manhã'), t('Tarde'), t('Noite')
 	])
-	const [hora, setHora] = useState([])
+	const [hora, setHora] = useState([]);
+	const [searchArr, setSearchArr] = useState([])
 
 	useEffect(() => {
 		helpersInterests.GetInterests()
 		.then(response => { setData(response.data) })
 	}, [])
 
-  	const onChangeSearch = query => setSearchQuery(query);
+	function handleChange(query){
+		setSearchQuery(query)
+	  	var search = query
+	  	let conversation = props.eventos;
+	  	let filteredArray = [];    
+	     
+	   for (let i = 0; i < conversation.length; i++) {
+	      if(conversation[i].title.toLowerCase().includes(search) || conversation[i].title.toUpperCase().includes(search))
+	         filteredArray.push(conversation[i]);
+	   }
+
+	  setSearchArr(filteredArray)
+	}
 
   	const openMenu = () => setVisible(true);
   	const closeMenu = () => setVisible(false);
@@ -70,7 +84,8 @@ const AllEvents = (props) => {
 				<View style={{flex:4}}>
 					<Searchbar
 				      placeholder={t("Pesquisar")}
-				      onChangeText={onChangeSearch}
+				      onChangeText={handleChange}
+				      autoCapitalize='none'
 				      value={searchQuery}
 				      style={{marginLeft: 30, backgroundColor: CinzaEscuro, height: 45}}
 				      theme={{roundness: 10, colors: { text: 'white', primary: "white", placeholder: Placeholder } }}
@@ -114,7 +129,7 @@ const AllEvents = (props) => {
 													: null
 												}
 												<Text style={styles.txtItem}>
-												  {item.name}
+												  {t(item.name)}
 												</Text>
 											</TouchableOpacity>
 										)
@@ -153,13 +168,20 @@ const AllEvents = (props) => {
 					</Menu>
 				</View>
 			</View>
-			{
-				data.map((item) => {
-					return(
-						<Listagem item={item} tipoEvento={'listagem'} select={(evento) => props.evento(evento)} key={item.id} />
-					)
-				})
+			{	
+				searchQuery.length == 0 ? (
+					data.map((item) => {
+						return(
+							<Listagem item={item} tipoEvento={'listagem'} select={(evento) => props.evento(evento)} key={item.id} />
+						)
+					})
+				) : searchArr.length > 0 ? <ListSearch data={searchArr} item={{name: 'Resultados'}}/> : <Text style={{textAlign: 'center', color: 'white', fontWeight: 'bold', fontFamily: Titulo, fontSize: 14, paddingTop: 10}}>
+				  Não foram encontrados nenhum resultado 
+				</Text>
+
 			}
+
+			
 			<View style={{height: 120}} />
 		</View>
 	)

@@ -7,6 +7,7 @@ import TabNavigator from '../../Components/TabNavigator'
 import GoButton from '../../Components/Buttons/GoButton'
 import Header from '../../Components/Header'
 import Listagem from '../../Components/Listagem'
+import ListSearch from '../../Components/Listagem/ListSearch'
 import { BlurView, VibrancyView, } from "@react-native-community/blur";
 import { useNavigation } from '@react-navigation/native';
 import Calendario from '../../Components/Calendar'
@@ -19,8 +20,10 @@ import { toggle_tab } from '../../Redux/actions';
 
 import { AuthContext } from '../../../components/context'; 
 
-import { HelpersInterests } from "../../Helpers";
+import { HelpersInterests, HelpersEvents } from "../../Helpers";
 const helpersInterests = new HelpersInterests();
+const helpersEvents = new HelpersEvents();
+
 
 const index = (props) => {
 	const [searchQuery, setSearchQuery] = useState('');
@@ -28,18 +31,15 @@ const index = (props) => {
 	const [visible, setVisible] = useState(false);
 	const [inter, setInter] = useState([]);
 	const [horarios, sethorarios] = useState([
-		'Qualquer horário', 'Manhã', 'Tarde', 'Noite'
+		t('Qualquer horário'), t('Manhã'), t('Tarde'), t('Noite')
 	])
-	const [hora, setHora] = useState([])
+	const [hora, setHora] = useState([]);
+	const [searchArr, setSearchArr] = useState([])
 
 	useEffect(() => {
 		helpersInterests.GetInterests()
-		.then(response => {
-			setData(response.data)
-		})
+		.then(response => {	setData(response.data)})
 	}, [])
-
-	const onChangeSearch = query => setSearchQuery(query);
 
 	const { signOut } = React.useContext(AuthContext);
 
@@ -71,89 +71,20 @@ const index = (props) => {
 		}
 	}
 
-	const renderItem = ({ item }) => {
-		return (
-			<TouchableOpacity onPress={() => navigation.navigate('DetailEvent', {item: item})}>
-				<ImageBackground 
-					source={item.uri} 
-					//resizeMode="contain"
-					style={{width: 256, height: 303, margin: 10}}
-					imageStyle={{borderRadius: 20}}
-				>
-					<View style={{flex: 1}}>
-						{
-							Platform.select({
-								ios: <BlurView
-									style={{height: 36, width: 84, margin: 20, borderRadius: 10}}
-									blurType="light"
-									blurAmount={0.1}
-									reducedTransparencyFallbackColor="white"
-								>
-									<View style={{flexDirection: 'row', justifyContent: 'space-evenly', flex:1, alignItems: 'center'}}>
-										<Icon name="calendar-outline" size={20} color={'white'} />
-										<Text  style={{fontFamily: Titulo, color: 'white', fontSize: 14, fontWeight: '600'}}>
-											{item.dia}
-										</Text>
-									</View>
-								</BlurView>,
-								android: <View style={[styles.styleViewBlur, {height: 36, width: 84, margin: 20 }]}>
-									<View style={{flexDirection: 'row', justifyContent: 'space-evenly', flex:1, alignItems: 'center'}}>
-										<Icon name="calendar-outline" size={20} color={'white'} />
-										<Text  style={{fontFamily: Titulo, color: 'white', fontSize: 14, fontWeight: '600'}}>
-											{item.dia}
-										</Text>
-									</View>
-								</View>
-							})
-						}
-					</View>
-					<View style={{flex: 1, justifyContent: 'flex-end'}}>
-					{
-						Platform.select({
-							ios: <BlurView
-								style={{ height: 100, justifyContent:'center',  borderRadius: 10}}
-								blurType="light"
-								blurAmount={0.1}
-								reducedTransparencyFallbackColor="white"
-							>
-								<View style={{paddingLeft: 20}}>
-									<Text style={{fontFamily: Titulo, color: 'white', fontSize: 10, fontWeight: '400'}}>
-										{item.tipo}
-									</Text>
-									<Text style={{fontFamily: Titulo, color: 'white', fontSize: 25, paddingVertical: 5, fontWeight: 'bold'}}>
-										{item.title}
-									</Text>
-									<View style={{flexDirection: 'row'}}>
-										<Icon name="location-outline" size={13} color={'white'} />
-										<Text  style={{fontFamily: Titulo, color: 'white', fontSize: 10, fontWeight: '400'}}>
-											{item.local}
-										</Text>
-									</View>
-								</View>
-							</BlurView>,
-							android: <View style={[styles.styleViewBlur, {height: 100, justifyContent:'center'}]}>
-								<View style={{paddingLeft: 20}}>
-									<Text style={{fontFamily: Titulo, color: 'white', fontSize: 10, fontWeight: '400'}}>
-										{item.tipo}
-									</Text>
-									<Text style={{fontFamily: Titulo, color: 'white', fontSize: 25, paddingVertical: 5, fontWeight: 'bold'}}>
-										{item.title}
-									</Text>
-									<View style={{flexDirection: 'row'}}>
-										<Icon name="location-outline" size={13} color={'white'} />
-										<Text  style={{fontFamily: Titulo, color: 'white', fontSize: 10, fontWeight: '400'}}>
-											{item.local}
-										</Text>
-									</View>
-								</View>
-							</View>
-						})
-					}
-					</View>
-				</ImageBackground>
-			</TouchableOpacity>
-		);
-	};
+	function handleChange(query){
+		setSearchQuery(query)
+	  	var search = query
+	  	let conversation = props.events;
+	  	let filteredArray = [];
+	        
+	     
+	   for (let i = 0; i < conversation.length; i++) {
+	      if(conversation[i].title.toLowerCase().includes(search) || conversation[i].title.toUpperCase().includes(search))
+	         filteredArray.push(conversation[i]);
+	   }
+
+	  setSearchArr(filteredArray)
+	}
 
 	return (
 		<SafeAreaView style={{flex: 1, backgroundColor: Background}}>
@@ -163,8 +94,9 @@ const index = (props) => {
 				<View style={{flex:4}}>
 					<Searchbar
 						placeholder="Pesquisar"
-						onChangeText={onChangeSearch}
+						onChangeText={(value) => handleChange(value)}
 						value={searchQuery}
+						autoCapitalize='none'
 						style={{marginLeft: 30, backgroundColor: CinzaEscuro, height: 45}}
 						theme={{roundness: 10, colors: { text: 'white', primary: "white", placeholder: Placeholder } }}
 					/>
@@ -207,7 +139,7 @@ const index = (props) => {
 													: null
 												}
 												<Text style={styles.txtItem}>
-												  {item.name}
+												  {t(item.name)}
 												</Text>
 											</TouchableOpacity>
 										)
@@ -246,23 +178,31 @@ const index = (props) => {
 					</Menu>
 				</View>
 			</View>
-			<View style={{marginTop: 30, flexDirection: 'row'}}>
-				<View style={{height: 56, width: 20, backgroundColor: '#3F3F3F', marginTop: 1}} />
-				<Calendario />
-			</View>
-			
-			<Listagem 
-				item={{name: 'Eventos Recomendados', id: props.user.id}} 
-				tipoEvento={'recomendados'}
-				select={(evento) => navigation.navigate('DetailEvent', {item: evento})}
-			/>
-			
+			{	
+				searchQuery.length == 0 ?
+				<View>
+					<View style={{marginTop: 30, flexDirection: 'row'}}>
+						<View style={{height: 56, width: 20, backgroundColor: '#3F3F3F', marginTop: 1}} />
+						<Calendario />
+					</View>
+					
+					<Listagem 
+						item={{name: 'Eventos Recomendados', id: props.user.id}} 
+						tipoEvento={'recomendados'}
+						select={(evento) => navigation.navigate('DetailEvent', {item: evento})}
+					/>
+					
 
-			<Listagem 
-				item={{name: 'Meus eventos', id: props.user.id}} 
-				tipoEvento={'Meus_Eventos'}
-				select={(evento) => navigation.navigate('DetailEvent', {item: evento})}
-			/>
+					<Listagem 
+						item={{name: 'Meus eventos', id: props.user.id}} 
+						tipoEvento={'Meus_Eventos'}
+						select={(evento) => navigation.navigate('DetailEvent', {item: evento})}
+					/>
+				</View>
+				: searchArr.length > 0 ? <ListSearch data={searchArr} item={{name: 'Resultados'}}/> : <Text style={{textAlign: 'center', color: 'white', fontWeight: 'bold', fontFamily: Titulo, fontSize: 14, paddingTop: 10}}>
+				  Não foram encontrados nenhum resultado 
+				</Text>
+			}
 
 			<View style={{marginHorizontal: 30}}>
 				<Text style={[styles.titulos, {paddingBottom: 20}]}>
@@ -361,7 +301,8 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
 	const { user } = state.Auth;
 	const { active_tab } = state.Tabs;
-	return { active_tab, user };
+	const { events } = state.Events;
+	return { active_tab, user, events };
 };
 
 export default connect(mapStateToProps, { toggle_tab })(index);

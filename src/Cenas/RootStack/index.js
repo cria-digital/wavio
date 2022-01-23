@@ -5,16 +5,17 @@ import { SignedInRoutes, AwesomeAccess } from '../../../Routes';
 import { Provider } from 'react-native-paper';
 
 import { connect } from 'react-redux';
-import { retrive_user } from '../../Redux/actions';
+import { retrive_user, requestEvents } from '../../Redux/actions';
 
 const index = (props) => {
    useEffect(() => {
-      props.retrive_user()
+      props.retrive_user();
+      props.requestEvents()
    }, []);
 
    return props.initializing ? 
       <View style={{flex:1,justifyContent:'center', alignItems:'center'}}>
-        <ActivityIndicator size="large"/>
+        <ActivityIndicator size="large" color={'#DF1884'} />
       </View> : props.user.photos?.length > 0 ?  (
          <Provider>
             <SignedInRoutes /> 
@@ -29,4 +30,4 @@ const mapStateToProps = (state) => {
    return { user, initializing };
 };
 
-export default connect(mapStateToProps, { retrive_user })(index);
+export default connect(mapStateToProps, { retrive_user, requestEvents })(index);

@@ -58,6 +58,7 @@ const index = (props) => {
 				tab == 'allEvents' ? 
 					<AllEvents
 						evento={(evento) => navigation.navigate('DetailEvent', {item: evento})} 
+						eventos={props.events}
 					/> 
 				: 
 					<MyEvents
@@ -84,7 +85,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
    const { user } = state.Auth;
-   return { user };
+   const { events } = state.Events;
+   return { user, events };
 };
 
 export default connect(mapStateToProps, { toggle_tab })(index);
