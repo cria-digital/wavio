@@ -114,7 +114,12 @@ const pt = {
    "Para uma experiência ainda mais completa, habilite sua localização": 'Para uma experiência ainda mais completa, habilite sua localização',
    "Selecione a foto de perfil": 'Selecione a fote de perfil',
    "Selecione o banner do evento": 'Selecione o banner do evento',
-   "Eventos Recomendados" : 'Recommended Events'
+   "Eventos Recomendados" : 'Eventos Recomendados',
+   "Resultados": 'Resultados',
+   "Qualquer horário": 'Qualquer horário',
+   "Manhã":'Manhã', 
+   "Tarde":'Tarde', 
+   "Noite":'Noite'
 };
 
 export default pt;

@@ -119,7 +119,12 @@ const en = {
    "Para uma experiência ainda mais completa, habilite sua localização": 'For an even more complete experience, enable your localization',
    "Selecione a foto de perfil": 'Select profile photo',
    "Selecione o banner do evento": 'Select event banner',
-   "Eventos Recomendados": 'Eventos Recomendados'
+   "Eventos Recomendados": 'Recommended Events',
+   "Resultados": 'Results',
+   "Qualquer horário": 'Any time',
+   "Manhã":'morning', 
+   "Tarde":'Evening', 
+   "Noite":'Night'
 };
 
 export default en;
