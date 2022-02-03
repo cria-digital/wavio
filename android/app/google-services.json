@@ -1,0 +1,152 @@
+{
+  "project_info": {
+    "project_number": "350795873365",
+    "firebase_url": "https://phoviapp-a7487.firebaseio.com",
+    "project_id": "phoviapp-a7487",
+    "storage_bucket": "phoviapp-a7487.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:350795873365:android:0da13fbd10a6ee014128dc",
+        "android_client_info": {
+          "package_name": "com.phoviapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "350795873365-bo5e7eu3a65gnb02n2il9271ofg9tjr7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.phoviapp",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "350795873365-u0os8krn7o28g0rnf8mi12eejuhk7jvj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.phoviapp",
+            "certificate_hash": "91200e38211ff147ba5d811d739a521c770df3a7"
+          }
+        },
+        {
+          "client_id": "350795873365-uiant1s0foj3gr8oh9edjjpdu1hq2o07.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByvOONAopZ2e1LQ5yNOpAWa3M-iK6h3RM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "350795873365-uiant1s0foj3gr8oh9edjjpdu1hq2o07.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "350795873365-5vug9f6kbrd6av2hgtdvfiht66tss95o.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.phovi"
+              }
+            }
+          ]
+        }
+      },
+      "admob_app_id": "ca-app-pub-8113497236234440~9618553697"
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:350795873365:android:f164896890054bcb4128dc",
+        "android_client_info": {
+          "package_name": "com.phoviapp.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "350795873365-uiant1s0foj3gr8oh9edjjpdu1hq2o07.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByvOONAopZ2e1LQ5yNOpAWa3M-iK6h3RM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "350795873365-uiant1s0foj3gr8oh9edjjpdu1hq2o07.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "350795873365-5vug9f6kbrd6av2hgtdvfiht66tss95o.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.phovi"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:350795873365:android:952658a968741ca04128dc",
+        "android_client_info": {
+          "package_name": "com.wavio"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "350795873365-i2fa1g3gt5hv9ll1124q9kk7egtgb3j9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.wavio",
+            "certificate_hash": "c902b490cc81d2748465666a117cdb49c0109dbd"
+          }
+        },
+        {
+          "client_id": "350795873365-ru57t0qc9l43c6nhncfa42i64kndge24.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.wavio",
+            "certificate_hash": "3612dadfaf0925d50489cf88fd9d66a72fe0a23d"
+          }
+        },
+        {
+          "client_id": "350795873365-uiant1s0foj3gr8oh9edjjpdu1hq2o07.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByvOONAopZ2e1LQ5yNOpAWa3M-iK6h3RM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "350795873365-uiant1s0foj3gr8oh9edjjpdu1hq2o07.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "350795873365-5vug9f6kbrd6av2hgtdvfiht66tss95o.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.phovi"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
