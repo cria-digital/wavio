@@ -1,10 +1,12 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { View, Text, ImageBackground, StyleSheet, SafeAreaView, Dimensions, TouchableOpacity, ScrollView } from 'react-native'
 import { Titulo, Descricao, Background, Placeholder, CinzaEscuro, Primary } from "../../Styles"
 import GoButton from "../../Components/Buttons/GoButton"
 import BackButtonSolid from "../../Components/Buttons/BackButtonSolid"
 import { TextInput, Divider, Checkbox  } from 'react-native-paper';
 import BouncyCheckbox from "react-native-bouncy-checkbox";
+import auth from '@react-native-firebase/auth';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 import { translate } from '../../Locales'
 const t = translate
@@ -27,6 +29,12 @@ const index = ({navigation}) => {
 
 	const { signIn } = React.useContext(AuthContext)
 
+	useEffect(() => {
+		GoogleSignin.configure({
+		  webClientId: '350795873365-u0os8krn7o28g0rnf8mi12eejuhk7jvj.apps.googleusercontent.com',
+		});
+	}, [])
+
 	const SubscribeHandle = (values) => {
 		helpersAuth.Subscribe(values).then(resp => {
 			resp ? helpersAuth.Login(values.Email, values.confirmPassword).then(response => {
@@ -43,6 +51,18 @@ const index = ({navigation}) => {
 		:	console.log('segundo' +response.message)
 		})
    }
+
+
+   async function onGoogleButtonPress() {
+  		// Get the users ID token
+	  const { idToken } = await GoogleSignin.signIn();
+
+	  // Create a Google credential with the token
+	  const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+	  // Sign-in the user with the credential
+	  return auth().signInWithCredential(googleCredential);
+	}
 
 
 	const cadastroValidationSchema = yup.object().shape({
@@ -202,7 +222,7 @@ const index = ({navigation}) => {
 						<Text style={styles.txtPonta}>{("with")}:</Text>
 					</View>
 					<View style={{flexDirection: "row"}}>
-						<TouchableOpacity style={styles.socialButton}>
+						<TouchableOpacity style={styles.socialButton} onPress={() => onGoogleButtonPress().then(() => console.log('Signed in with Google!'))}>
 							<Text style={styles.txtButton}>Google</Text>
 						</TouchableOpacity>
 						<TouchableOpacity style={styles.socialButton}>
