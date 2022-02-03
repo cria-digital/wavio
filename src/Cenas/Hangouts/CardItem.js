@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { BlurView, VibrancyView } from "@react-native-community/blur";
 import { BackgroundClaro, Titulo, Descricao, Primary, Background } from '../../Styles';
 
+const meio = (Dimensions.get('window').width / 2) - 25
 
 const CardItem = ({
   image,
@@ -82,13 +83,16 @@ const CardItem = ({
                   
                <TouchableOpacity style={{flex: 4}} onPress={() => next()} />
             </View>
-            <View style={{flexDirection: 'row', width: '100%', alignItems: 'flex-end'}}>
+            <View style={{flexDirection: 'row', width: '100%', alignItems: 'flex-end' }}>
                <TouchableOpacity 
-                  style={{backgroundColor: 'rgba(255, 87, 87, 0.25)', height: 55, flex: 1, justifyContent: 'center', alignItems: 'center'}}
+                  style={{paddingRight: 10, backgroundColor: 'rgba(255, 87, 87, 0.25)', height: 55, flex: 1, justifyContent: 'center', alignItems: 'center'}}
                   onPress={() => onPressLeft()}
                >
                   <Icon name="close-outline" size={30} color={'white'} />
                </TouchableOpacity>
+               <View style={{height: 58, width: 58, backgroundColor: Primary, borderRadius: 10, position: 'absolute', left: meio, elevation: 5, justifyContent: 'center', alignItems: 'center'}}>
+                  <Icon name="refresh-outline" size={30} color={'white'} />
+               </View>
                <TouchableOpacity 
                   style={{backgroundColor: 'rgba(24, 178, 76, 0.25)', height: 55, flex: 1, justifyContent: 'center', alignItems: 'center'}}
                   onPress={() => onPressRight()}
