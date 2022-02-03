@@ -27,7 +27,6 @@ import Planos from '../Planos'
 
 //Hangouts
 import Hangout from '../Hangouts'
-import HangoutTeste from '../Hangouts/HangoutTeste'
 
 //Notificações
 import Notificações from '../Notificações'
@@ -74,9 +73,8 @@ export const Chats = ({navigation}) => {
 
 export const Hangouts = ({navigation}) => {
    return (
-      <Stack.Navigator initialRouteName="HangoutTeste" screenOptions={{headerShown: false}}>
-         <Stack.Screen name="Hangout" component={Hangout} />
-         <Stack.Screen name="HangoutTeste" component={HangoutTeste} />
+      <Stack.Navigator initialRouteName="Hangouts" screenOptions={{headerShown: false}}>
+         <Stack.Screen name="Hangouts" component={Hangout} />
       </Stack.Navigator>
    );
 }
