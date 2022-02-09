@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
   		backgroundColor: CinzaEscuro,
       borderRadius: 10, 
       height: 50,
-      paddingHorizontal: 20,
+      marginHorizontal: 20,
       
   	},
   	botoes: {
