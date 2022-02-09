@@ -13,6 +13,7 @@ import {
 	SafeAreaView,
 	Image,
 	PermissionsAndroid,
+	ActivityIndicator
 } from 'react-native';
 import {
 	Background,
