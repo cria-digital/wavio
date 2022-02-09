@@ -5,12 +5,11 @@ import { SignedInRoutes, AwesomeAccess } from '../../../Routes';
 import { Provider } from 'react-native-paper';
 
 import { connect } from 'react-redux';
-import { retrive_user, requestEvents } from '../../Redux/actions';
+import { retrive_user } from '../../Redux/actions';
 
 const index = (props) => {
    useEffect(() => {
-      props.retrive_user();
-      props.requestEvents()
+      props.retrive_user()
    }, []);
 
    return props.initializing ? 
@@ -30,4 +29,4 @@ const mapStateToProps = (state) => {
    return { user, initializing };
 };
 
-export default connect(mapStateToProps, { retrive_user, requestEvents })(index);
+export default connect(mapStateToProps, { retrive_user })(index);

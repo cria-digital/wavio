@@ -16,7 +16,7 @@ import { translate } from '../../Locales'
 const t = translate
 
 import { connect } from 'react-redux';
-import { toggle_tab } from '../../Redux/actions';
+import { toggle_tab, requestEvents } from '../../Redux/actions';
 
 import { AuthContext } from '../../../components/context'; 
 
@@ -35,6 +35,10 @@ const index = (props) => {
 	])
 	const [hora, setHora] = useState([]);
 	const [searchArr, setSearchArr] = useState([])
+
+	useEffect(() => {
+		props.requestEvents()
+	}, [])
 
 	useEffect(() => {
 		helpersInterests.GetInterests()
@@ -305,6 +309,6 @@ const mapStateToProps = (state) => {
 	return { active_tab, user, events };
 };
 
-export default connect(mapStateToProps, { toggle_tab })(index);
+export default connect(mapStateToProps, { toggle_tab, requestEvents })(index);
 
 
