@@ -103,7 +103,8 @@ const TalkEvent = ({navigation}) => {
   				_id: message.author
   			},
   			content: message.content,
-  			_id: message._id
+  			_id: message._id,
+  			images: message.images
   		}
   		console.log(message)
   		setMessages((prev) => [...prev, msg]);
@@ -213,7 +214,7 @@ const TalkEvent = ({navigation}) => {
 					<View style={{alignSelf: 'flex-end'}}>
 						<View style={styles.myMsg}>
 							{
-								item.images.length > 0 ? <Image
+								item.images?.length > 0 ? <Image
 								  style={{height: 100, width: 100}}
 								  source={{uri: item.images[0]}}
 								/> : null
@@ -230,7 +231,7 @@ const TalkEvent = ({navigation}) => {
 					<View style={{alignSelf: 'flex-start'}}> 
 						<View style={styles.youMsg}>
 							{
-								item.images.length > 0 ? <Image
+								item.images?.length > 0 ? <Image
 								  style={{height: 100, width: 100}}
 								  source={{uri: item.images[0]}}
 								/> : null
