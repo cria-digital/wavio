@@ -8,4 +8,5 @@ export { HelpersLocation } from './Location'
 export { HelpersFollowers } from './Followers'
 export { HelpersChat } from './Chat'
 export { HelpersHangouts } from './Hangouts'
+export { HelpersPlans } from './Plans'
 
