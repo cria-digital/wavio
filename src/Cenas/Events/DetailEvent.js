@@ -54,19 +54,6 @@ const DetailEvent = (props) => {
 		}
 	}, [])
 
-	useEffect(async() => {
-		getToken().then(resp => setToken(resp))
-	}, [])
-
-	const getToken = async () => {
-	  	try {
-	    	const value = await AsyncStorage.getItem('userToken')
-	   	return value
-	  	} catch(e) {
-	    	// error reading value
-	  	}
-	}
-
 	const findCheckIn = () => {
 		helpersCheckIn.CheckInMe().then(resp => {
 			let eventos = []
@@ -179,7 +166,7 @@ const DetailEvent = (props) => {
 						  	{t("Cancelar")}
 						</Text>
 					</TouchableOpacity>
-					<TouchableOpacity style={styles.sendMessage} onPress={() => navigation.navigate("TalkEvent", { event: item, user_id: props.user.id, token: token })}>
+					<TouchableOpacity style={styles.sendMessage} onPress={() => navigation.navigate("TalkEvent", { event: item, user_id: props.user.id })}>
 						<LinearGradient colors={['#eba358', '#df1884']} style={styles.enviarMsg}>
 							<Text style={styles.txtBotao}>
 							  	{t("Mandar mensagem")}
@@ -310,7 +297,7 @@ const DetailEvent = (props) => {
       		item={check} 
       		sendMessage={() => {
       			setModalVisible(!modalVisible); 
-      			navigation.navigate("Talk", {user_id: props.user.id, send_id: check, token: token})
+      			navigation.navigate("Talk", {user_id: props.user.id, send_id: check})
       		}}
       		meu_id={props.user.id} 
       		dismiss={() => setModalVisible(!modalVisible)}
