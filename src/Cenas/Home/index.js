@@ -16,7 +16,7 @@ import { translate } from '../../Locales'
 const t = translate
 
 import { connect } from 'react-redux';
-import { toggle_tab, requestEvents } from '../../Redux/actions';
+import { toggle_tab, requestEvents, retrive_token } from '../../Redux/actions';
 
 import { AuthContext } from '../../../components/context'; 
 
@@ -37,7 +37,8 @@ const index = (props) => {
 	const [searchArr, setSearchArr] = useState([])
 
 	useEffect(() => {
-		props.requestEvents()
+		props.requestEvents();
+		props.retrive_token()
 	}, [])
 
 	useEffect(() => {
@@ -309,6 +310,6 @@ const mapStateToProps = (state) => {
 	return { active_tab, user, events };
 };
 
-export default connect(mapStateToProps, { toggle_tab, requestEvents })(index);
+export default connect(mapStateToProps, { toggle_tab, requestEvents, retrive_token })(index);
 
 
