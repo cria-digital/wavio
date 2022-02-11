@@ -4,6 +4,18 @@ import {Platform} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 class HelpersUser {
+
+	async GetToken() {
+		try {
+			userToken = await AsyncStorage.getItem('userToken'); 
+			return userToken
+		} catch (err) {
+			const error = err.response.data;
+			return error;
+		}
+	}
+
+
 	async GetAllUsers() {
 		try {
 			const users = await api.get('/users', {
