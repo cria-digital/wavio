@@ -22,7 +22,6 @@ import { toggle_tab } from '../../Redux/actions';
 
 const index = (props) => {
 	const [searchQuery, setSearchQuery] = React.useState('');
-	const [token, setToken] = useState("")
 
   	const onChangeSearch = query => setSearchQuery(query);
 
@@ -35,40 +34,29 @@ const index = (props) => {
    const onToggleTab = (aba) => {
    	setTab(aba)
    } 
-
-   useEffect(async() => {
-		getToken().then(resp => setToken(resp))
-	}, [])
-
-	const getToken = async () => {
-	  	try {
-	    	const value = await AsyncStorage.getItem('userToken')
-	   	return value
-	  	} catch(e) {
-	    	// error reading value
-	  	}
-	}
-
+   
    const renderAba = () => {
    	if(tab == 'Conversas'){
    		return(
    			<Conversas 
-   				chat={(item) => navigation.navigate('Conversa', {item: JSON.stringify(item), user_id: props.user._id, token: token})}
+   				chat={(item) => navigation.navigate('Conversa', {item: JSON.stringify(item), user_id: props.user._id, token: props.token})}
    				user={props.user}
    				foco={isFocused}
+   				token={props.token}
    			/>
    		)
    	}else if(tab == 'Eventos'){
    		return(
    			<Eventos 
-   				press={(item) => navigation.navigate("TalkEvent", { event: item, user_id: props.user.id, token: token })}
+   				press={(item) => navigation.navigate("TalkEvent", { event: item, user_id: props.user.id, token: props.token })}
    				foco={isFocused}
+   				token={props.token}
    			/>
    		)
    	}else if(tab == 'Seguindo'){
    		return(
    			<Seguindo 
-   				press={(targetId) => navigation.navigate("Talk", {user_id: props.user.id, send_id: targetId, token: token})}
+   				press={(targetId) => navigation.navigate("Talk", {user_id: props.user.id, send_id: targetId, token: props.token})}
    				foco={isFocused}
    				user={props.user}
    			/>
@@ -135,8 +123,8 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (state) => {
-   const { user } = state.Auth;
-   return { user };
+   const { user, token } = state.Auth;
+   return { user, token };
 };
 
 export default connect(mapStateToProps, { toggle_tab })(index);
