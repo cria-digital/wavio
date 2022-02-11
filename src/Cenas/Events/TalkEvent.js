@@ -3,13 +3,14 @@ import { View, Text, Image, StyleSheet, FlatList, ImageBackground, Alert, Modal,
 import Icon from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient'
 import { Background, Primary, Descricao } from '../../Styles'
-import { useRoute } from '@react-navigation/native';
+import { useRoute, useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from "axios";
 import io from 'socket.io-client';
 import moment from 'moment';
 import SendPhotos from '../../Components/SendPhoto'
 import ImagePicker from 'react-native-image-crop-picker';
+import { connect } from 'react-redux';
 
 import {translate} from '../../Locales';
 const t = translate;
@@ -18,7 +19,7 @@ import { HelpersChat, HelpersUser } from "../../Helpers";
 const helpersChat = new HelpersChat();
 const helpersUser = new HelpersUser();
 
-const TalkEvent = ({navigation}) => {
+const TalkEvent = (props) => {
   	const [message, setMessage] = useState("");
   	const [messages, setMessages] = useState([]);
   	const [modalVisible, setModalVisible] = useState(false);
@@ -27,12 +28,13 @@ const TalkEvent = ({navigation}) => {
 	const [chat_id, setChatId] = useState("");
 
 	const route = useRoute();
+	const navigation = useNavigation();
 
 	const yourRef = useRef(null);
 
 	const event = route.params.event
 	const userId = route.params.user_id
-	const token = route.params.token
+	const token = props.token
 
 	const api_url = "https://wavio-api-2bd7wtnamq-uc.a.run.app";
   		const socket = React.useMemo(
@@ -357,4 +359,10 @@ const styles = StyleSheet.create({
 	}
 })
 
-export default TalkEvent
+
+const mapStateToProps = (state) => {
+   const { token } = state.Auth;
+   return { token };
+};
+
+export default connect(mapStateToProps, { })(TalkEvent);

@@ -3,12 +3,13 @@ import { View, Text, Image, StyleSheet, FlatList, ImageBackground, TextInput, Sa
 import Icon from 'react-native-vector-icons/Ionicons';
 import LinearGradient from 'react-native-linear-gradient'
 import { Background, Primary, Descricao, Placeholder } from '../../Styles'
-import { useRoute } from '@react-navigation/native';
+import { useRoute, useNavigation } from '@react-navigation/native';
 import SendPhotos from '../../Components/SendPhoto'
 import axios from "axios";
 import io from 'socket.io-client';
 import moment from 'moment';
 import ImagePicker from 'react-native-image-crop-picker';
+import { connect } from 'react-redux';
 
 import {translate} from '../../Locales';
 const t = translate;
@@ -17,7 +18,7 @@ import { HelpersChat, HelpersUser } from "../../Helpers";
 const helpersChat = new HelpersChat();
 const helpersUser = new HelpersUser();
 
-const Conversa = ({navigation}) => {
+const Conversa = (props) => {
 	//const [txt, setText] = useState('');
 	//const [mensagens, setMensagens] = useState([]);
 	//const chat_id = "61aa9fec15942ee1cc14cd15";
@@ -30,12 +31,13 @@ const Conversa = ({navigation}) => {
 	const [chat_id, setChatId] = useState("")
 
 	const route = useRoute();
+	const navigation = useNavigation();
 
 	const yourRef = useRef(null);
 
 	const userId = route.params.user_id
 	const send_id = route.params.send_id
-	const token = route.params.token
+	const token = props.token
 
 	const api_url = "https://wavio-api-2bd7wtnamq-uc.a.run.app";
 	const socket = React.useMemo(
@@ -375,4 +377,9 @@ const styles = StyleSheet.create({
   	},
 })
 
-export default Conversa
+const mapStateToProps = (state) => {
+   const { token } = state.Auth;
+   return { token };
+};
+
+export default connect(mapStateToProps, { })(Conversa);
