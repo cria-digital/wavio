@@ -155,32 +155,32 @@ const Conversa = ({navigation}) => {
     } else return true;
   	};
 
-  const requestExternalWritePermission = async () => {
-    if (Platform.OS === 'android') {
-      try {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-          {
-            title: 'External Storage Write Permission',
-            message: 'App needs write permission',
-          },
-        );
-        return granted === PermissionsAndroid.RESULTS.GRANTED;
-      } catch (err) {
-        console.warn(err);
-        alert('Write permission err', err);
-      }
-      return false;
-    } else return true;
-  };
+  	const requestExternalWritePermission = async () => {
+    	if (Platform.OS === 'android') {
+	      try {
+	        const granted = await PermissionsAndroid.request(
+	          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+	          {
+	            title: 'External Storage Write Permission',
+	            message: 'App needs write permission',
+	          },
+	        );
+	        return granted === PermissionsAndroid.RESULTS.GRANTED;
+	      } catch (err) {
+	        console.warn(err);
+	        alert('Write permission err', err);
+	      }
+      	return false;
+    	} else return true;
+  	};
 
-  const captureImage = async type => {
+  	const captureImage = async type => {
     	ImagePicker.openCamera({width: 320, height: 180 }).then(image => {
       	var img = { sourceURL: image.path,	mime: image.mime };
       	setPhotos(img);
       	setModalVisible(!modalVisible)
    	});
-  };
+  	};
 
   	const chooseFile = type => {
     	ImagePicker.openPicker({width: 320, height: 180}).then(images => {
