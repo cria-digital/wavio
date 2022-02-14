@@ -78,8 +78,14 @@ const Conversa = ({navigation}) => {
 
 	function loadChatMessages() {
       helpersChat.GetMessageChat(item._id).then(response => {
-			setMessages(response.data)
+			setMessages(response.data);
+			lerMensagens(response.data)
 		})
+  	}
+
+  	function lerMensagens (arr){
+  		var filtered = arr.filter(value => value.read === false);
+  		filtered.forEach(msg => helpersChat.MarcarLida(item._id, msg._id))
   	}
 
   	function handleSendMessage(){

@@ -30,6 +30,21 @@ class HelpersChat {
 		}
 	}
 
+	async MarcarLida(chat_id, msg_id){
+		try{
+			const menssages = await api.get('/chats/'+chat_id+'/messages/read/'+ msg_id, { 
+				headers: {
+	            'Content-Type': 'application/json',
+	        	}
+			})
+			return menssages
+		} catch (err) {
+			console.log(err.response.data)
+			const error = err.response.data
+			return false
+		}
+	}
+
 	async CreateChat(userId, send_id){
 		try{
 			const chat = await api.post('/chats', { 

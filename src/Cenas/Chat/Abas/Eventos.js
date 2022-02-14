@@ -8,19 +8,64 @@ import {
   Image,
 } from 'react-native';
 import {Descricao} from '../../../Styles';
+import io from 'socket.io-client';
 
 
 import {HelpersChat, HelpersUser} from '../../../Helpers';
 const helpersChat = new HelpersChat();
 
 const Eventos = (props) => {
-  const [chats, setChats] = useState([]);
+   const [chats, setChats] = useState([]);
 
-  useEffect(() => {
-    helpersChat
-      .GetChats()
-      .then(response => setChats(response.data?.filter(chat => chat.event)));
-  }, [props.foco]);
+   const token = props.token
+
+   useEffect(() => {
+      helpersChat.GetChats().then(response => setChats(response.data?.filter(chat => chat.event)));
+   }, [props.foco]);
+
+   const api_url = "https://wavio-api-2bd7wtnamq-uc.a.run.app";
+
+   const socket = React.useMemo(
+      () =>
+         io(api_url, {
+            transports: ["websocket"],
+            query: {
+               token,
+            },
+         }),
+      []
+   );
+
+   useEffect(() => {
+
+      socket.on("error", (error) => console.log("socket error", error));
+
+      socket.on("disconnect", (error) =>
+         console.log("socket disconnected", error)
+      );
+
+      // escuta o evento para receber mensagems
+      socket.on("chat_update", handleNewMessage);
+
+      return () => {
+         socket.off("error");
+
+         socket.off("disconnect");
+
+         socket.off("chat_update");
+      };
+   }, [socket]);
+
+   function handleNewMessage(message) {
+      console.log('socket' + message)
+      helpersChat.GetChats().then(response => setChats(response.data?.filter(chat => chat.event)));  
+
+      {/*var result = chats.find(fruit => fruit._id === message.chat);
+      var pos = chats.indexOf(result);
+      chats.splice(pos, 1, { ...result, unread_messages: message.unread_messages });
+      console.log(result)
+      setChats(chats) */}
+   }
 
    const renderItem = ({item}) => {
       let image = item?.event?.photos?.find(photo => photo.banner);
@@ -46,12 +91,12 @@ const Eventos = (props) => {
                </View>
                <View style={{flex: 1, alignItems: 'flex-end'}}>
                   <Text style={{color: 'white'}}>{item.date}</Text>
-                  {/*  
+                  {  
                      item.unread_messages ? 
                      <View style={{ backgroundColor: '#8AF470', width: 30,justifyContent: 'center',alignItems: 'center',marginTop: 8, borderRadius: 10 }}>
                         <Text style={{color: '#000'}}>{item.unread_messages}</Text>
                      </View> : null
-                  */}
+                  }
                </View>
             </View>
             <View style={{borderWidth: 1, borderColor: 'gray', marginLeft: 60}}></View>

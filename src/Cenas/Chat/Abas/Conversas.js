@@ -17,7 +17,7 @@ const helpersChat = new HelpersChat();
 const Conversas = props => {
    const [chats, setChats] = useState([]);
 
-   const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NDQ2MTA3NzAsIl9pZCI6IjYxNjNiYzA3YzA4NjViZDI0NmFjOWJmMCIsImlkIjoiNjE2M2JjMDdjMDg2NWJkMjQ2YWM5YmYwIiwibmFtZSI6ImhlcnZlc3NvbiAgcG9ydG8iLCJlbWFpbCI6ImhlcnZlc3NvbnBvcnRvQGhvdG1haWwuY29tIiwiaWF0IjoxNjQ0NTI0MzcwfQ.oZkMkpVONKolAKNwTe-maDzYRhxQ_WqGVyDSwe_y3P4"
+   const token = props.token
 
    useEffect(() => {
       helpersChat.GetChats().then(response => setChats(response.data?.filter(chat => !chat.event)));
@@ -57,70 +57,73 @@ const Conversas = props => {
    }, [socket]);
 
    function handleNewMessage(message) {
-      const result = chats.find(fruit => fruit._id === message.chat );
+      helpersChat.GetChats().then(response => setChats(response.data?.filter(chat => !chat.event)));
+
+      {/*var result = chats.find(fruit => fruit._id === message.chat);
       var pos = chats.indexOf(result);
       chats.splice(pos, 1, { ...result, unread_messages: message.unread_messages });
-      setChats(chats.map(item => item))
+      console.log(result)
+      setChats(chats) */}
    }
 
    const renderAvatar = photos => {
-    return photos.map((item, index) => {
-      return item.profile ? (
-        <Image
-          style={{height: 40, width: 40, borderRadius: 5}}
-          source={{uri: item.url || item.uri}}
-          key={index}
-          resizeMode="cover"
-        />
-      ) : null;
-    });
+      return photos?.map((item, index) => {
+         return item.profile ? (
+            <Image
+               style={{height: 40, width: 40, borderRadius: 5}}
+               source={{uri: item.url || item.uri}}
+               key={index}
+               resizeMode="cover"
+            />
+         ) : null;
+      });
    };
 
-  const renderItem = ({item}) => {
-  	const arr = item.members.find(ids => ids._id !== props.user._id)
+   const renderItem = ({item}) => {
+  	   const arr = item?.members?.find(ids => ids._id !== props.user._id)
 
-    return (
-      <TouchableOpacity
-        style={styles.container}
-        onPress={() => props.chat(item)}>
-        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-          <View style={{flex: 1}}>{renderAvatar(arr.photos)}</View>
-          <View style={{flex: 3}}>
-            <Text
-              style={{
-                color: 'white',
-                fontFamily: Descricao,
-                fontWeight: '700',
-                fontSize: 14,
-              }}>
-              {arr.name}
-            </Text>
-            <Text
-              style={{
-                color: 'white',
-                fontFamily: Descricao,
-                fontWeight: '400',
-                fontSize: 14,
-              }}>
-              {item?.last_message?.content}
-            </Text>
-          </View>
-          <View style={{flex: 1, alignItems: 'flex-end'}}>
-            <Text style={{color: 'white'}}>{item.date}</Text>
-            {
-               item.unread_messages ? 
-               <View style={{backgroundColor: '#8AF470', width: 30, justifyContent: 'center', alignItems: 'center',  borderRadius: 10}}>
-   			    	<Text style={{color: '#000'}}>
-   			    		{item.unread_messages}
-   			    	</Text>
-			      </View> : null
-            }
-          </View>
-        </View>
-        <View style={{borderWidth: 1, borderColor: 'gray', marginLeft: 60}} />
-      </TouchableOpacity>
-    );
-  };
+      return (
+         <TouchableOpacity
+            style={styles.container}
+            onPress={() => props.chat(item)}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+               <View style={{flex: 1}}>{renderAvatar(arr?.photos)}</View>
+               <View style={{flex: 3}}>
+                  <Text
+                    style={{
+                      color: 'white',
+                      fontFamily: Descricao,
+                      fontWeight: '700',
+                      fontSize: 14,
+                    }}>
+                    {arr?.name}
+                  </Text>
+                  <Text
+                    style={{
+                      color: 'white',
+                      fontFamily: Descricao,
+                      fontWeight: '400',
+                      fontSize: 14,
+                    }}>
+                    {item?.last_message?.content}
+                  </Text>
+               </View>
+               <View style={{flex: 1, alignItems: 'flex-end'}}>
+                  <Text style={{color: 'white'}}>{item.date}</Text>
+                  {
+                     item.unread_messages ? 
+                     <View style={{backgroundColor: '#8AF470', width: 30, justifyContent: 'center', alignItems: 'center',  borderRadius: 10}}>
+            			   <Text style={{color: '#000'}}>
+            			    	{item?.unread_messages}
+            			   </Text>
+         			   </View> : null
+                  }
+               </View>
+            </View>
+            <View style={{borderWidth: 1, borderColor: 'gray', marginLeft: 60}} />
+         </TouchableOpacity>
+      );
+   };
 
   return (
     <View style={{marginTop: 20}}>
