@@ -83,8 +83,14 @@ const TalkEvent = (props) => {
 
   	function loadChatMessages(id) {
       helpersChat.GetMessageChat(id).then(response => {
-			setMessages(response.data)
+			setMessages(response.data);
+			lerMensagens(response.data)
 		})
+  	}
+
+  	function lerMensagens (arr){
+  		var filtered = arr.filter(value => value.read === false);
+  		filtered.forEach(msg => helpersChat.MarcarLida(chat_id, msg._id))
   	}
 
   	function handleSendMessage(){
