@@ -19,6 +19,7 @@
 		A245042D2E2CC29B51A5BADE /* libPods-Wavio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 325CE1DF7CA21B69F111C99E /* libPods-Wavio.a */; };
 		B776C1FA415469B6153768DE /* libPods-Wavio-WavioTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C9501D70B012DD5FBDD9EFBD /* libPods-Wavio-WavioTests.a */; };
 		C56A116167974AE3BB28AA39 /* Boston Heavy.otf in Resources */ = {isa = PBXBuildFile; fileRef = 185FD50FA55F4CF9AED30E91 /* Boston Heavy.otf */; };
+		CC9B651E27BDE33200A50338 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CC9B651D27BDE33200A50338 /* GoogleService-Info.plist */; };
 		D2203CB94BB5467FBC7D32CB /* Trebuchet MS Negrito.otf in Resources */ = {isa = PBXBuildFile; fileRef = 7A0CDE4134614D58BFB8D127 /* Trebuchet MS Negrito.otf */; };
 /* End PBXBuildFile section */
 
@@ -69,6 +70,7 @@
 		C7890F0123E3480A8EAFF75A /* Trebuchet MS.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "Trebuchet MS.otf"; path = "../assets/fonts/Trebuchet MS.otf"; sourceTree = "<group>"; };
 		C9501D70B012DD5FBDD9EFBD /* libPods-Wavio-WavioTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Wavio-WavioTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9FDDEBBA8974107AEDDC2D6 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
+		CC9B651D27BDE33200A50338 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		CCA4A376F5EC6E89A313B35E /* Pods-Wavio.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Wavio.release.xcconfig"; path = "Target Support Files/Pods-Wavio/Pods-Wavio.release.xcconfig"; sourceTree = "<group>"; };
 		E4E35B4E2D124BBB9484ECF7 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		E51DE92F689140D99134F1DB /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
@@ -116,6 +118,7 @@
 		13B07FAE1A68108700A75B9A /* Wavio */ = {
 			isa = PBXGroup;
 			children = (
+				CC9B651D27BDE33200A50338 /* GoogleService-Info.plist */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -307,6 +310,7 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				CC9B651E27BDE33200A50338 /* GoogleService-Info.plist in Resources */,
 				5642499BBB9A44D6857D506E /* Boston Bold.otf in Resources */,
 				7C8E46CC5E46496A89656993 /* Trebuchet MS.otf in Resources */,
 				D2203CB94BB5467FBC7D32CB /* Trebuchet MS Negrito.otf in Resources */,
@@ -571,7 +575,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				"CODE_SIGN_STYLE[sdk=*]" = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = UA57KCGY57;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Wavio/Info.plist;
@@ -606,7 +610,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				"CODE_SIGN_STYLE[sdk=*]" = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 3;
 				DEVELOPMENT_TEAM = UA57KCGY57;
 				INFOPLIST_FILE = Wavio/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
