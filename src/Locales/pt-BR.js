@@ -119,7 +119,8 @@ const pt = {
    "Qualquer horário": 'Qualquer horário',
    "Manhã":'Manhã', 
    "Tarde":'Tarde', 
-   "Noite":'Noite'
+   "Noite":'Noite',
+   "Coloque seu e-mail": 'Coloque seu e-mail'
 };
 
 export default pt;

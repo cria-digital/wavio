@@ -124,7 +124,8 @@ const en = {
    "Qualquer horário": 'Any time',
    "Manhã":'morning', 
    "Tarde":'Evening', 
-   "Noite":'Night'
+   "Noite":'Night',
+   "Coloque seu e-mail": 'Put your email'
 };
 
 export default en;

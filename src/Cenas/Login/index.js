@@ -12,18 +12,19 @@ const helpersAuth = new HelpersAuth();
 
 import { AuthContext } from '../../../components/context';
 
+import { Formik } from 'formik'
+import * as yup from 'yup';
+
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 const index = ({navigation}) => {
-	const [Email, setEmail] = useState('')
-	const [Senha, setSenha] = useState('')
 	const [viewSenha, setViewSenha] = useState(true)
 
 	const { signIn } = React.useContext(AuthContext)
 
-	const loginHandle = () => {
-		helpersAuth.Login(Email, Senha)
+	const loginHandle = (values) => {
+		helpersAuth.Login(values.Email, values.password)
 		.then(response => {
 			if(response?.data?.token){
 				signIn({
@@ -36,6 +37,14 @@ const index = ({navigation}) => {
 			}
 		})
    }
+
+   const cadastroValidationSchema = yup.object().shape({
+      password: yup
+         .string()
+         .min(6, ({ min }) => t('A senha precisa ter')+" "+ min +" "+t('caracteres'))
+         .required(t('Coloque uma senha')),
+      Email: yup.string().email().required(t('Coloque seu e-mail')),
+   })
 
 	return (
 		<ScrollView>
@@ -51,45 +60,71 @@ const index = ({navigation}) => {
 					</Text>
 				</View>
 			</ImageBackground>
-			<View style={styles.containerInferior}>
-				<TextInput
-					autoCapitalize='none'
-				   mode='outlined'
-				   label={t("E-mail")}
-				   placeholder={t("Digite seu e-mail")}
-				   placeholderTextColor={Placeholder}
-				   outlineColor={Email ? "white" : "transparent"}
-				   value={Email}
-				   onChangeText={(value) => setEmail(value)}
-				   style={styles.input}
-				   theme={{roundness: 10, colors: { text: 'white', primary: "white", placeholder: Placeholder } }}
-				   keyboardType='email-address'
-			   />
-				<TextInput
-					autoCapitalize='none'
-				   mode='outlined'
-				   label={t("Senha")}
-		      	right={
-		      		<TextInput.Icon 
-		      			name={viewSenha ? 'eye-outline' : 'eye-off-outline'} 
-		      			color={Placeholder} onPress={() => setViewSenha(!viewSenha)}/>
-		      	}
-				   placeholder={t("Digite sua senha")}
-				  	placeholderTextColor={Placeholder}
-				   outlineColor={Senha ? "white" : "transparent"}
-				   value={Senha}
-				   secureTextEntry={viewSenha}
-				  	onChangeText={(value) => setSenha(value)}
-				   style={styles.input}
-				   theme={{roundness: 10, colors: { text: 'white', primary: "white", placeholder: Placeholder } }}
-				/>	
-			   <View style={{flexDirection: 'row', paddingHorizontal: 20, justifyContent: 'space-between'}}>
-			   	<TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')} style={{width: 80}}>
-			   		<Text style={styles.recSenha}>{t("Esqueci minha senha")}</Text>
-			   	</TouchableOpacity>
-			   	<GoButton width={140} title={"Acessar"} press={() => loginHandle()}/>
-			   </View>
-			</View>
+			<Formik
+	         validationSchema={cadastroValidationSchema}
+	         initialValues={{ Email: '', password: ''}}
+	         onSubmit={values => loginHandle(values)}
+	      >
+	         {({
+	            handleChange,
+	            handleBlur,
+	            handleSubmit,
+	            setFieldValue,
+	            values,
+	            errors,
+	            isValid
+	         }) => (
+	            <>
+					<View style={styles.containerInferior}>
+						<TextInput
+							autoCapitalize='none'
+						   mode='outlined'
+						   label={t("E-mail")}
+						   placeholder={t("Digite seu e-mail")}
+						   placeholderTextColor={Placeholder}
+						   outlineColor={values.Email ? "white" : "transparent"}
+						  	onChangeText={handleChange('Email')}
+	                  onBlur={handleBlur('Email')}
+	                  value={values.Email} 
+						   style={styles.input}
+						   theme={{roundness: 10, colors: { text: 'white', primary: "white", placeholder: Placeholder } }}
+						   keyboardType='email-address'
+					   />
+					   {errors.Email &&
+	                  <Text style={styles.erros}>{errors.Email}</Text>
+	               }
+						<TextInput
+							autoCapitalize='none'
+						   mode='outlined'
+						   label={t("Senha")}
+				      	right={
+				      		<TextInput.Icon 
+				      			name={viewSenha ? 'eye-outline' : 'eye-off-outline'} 
+				      			color={Placeholder} onPress={() => setViewSenha(!viewSenha)}/>
+				      	}
+				      	onChangeText={handleChange('password')}
+	                  onBlur={handleBlur('password')}
+	                  value={values.password} 
+						   placeholder={t("Digite sua senha")}
+						  	placeholderTextColor={Placeholder}
+						   outlineColor={values.password ? "white" : "transparent"}
+						   secureTextEntry={viewSenha}
+						   style={styles.input}
+						   theme={{roundness: 10, colors: { text: 'white', primary: "white", placeholder: Placeholder } }}
+						/>	
+						{errors.password &&
+	                  <Text style={styles.erros}>{errors.password}</Text>
+	               }
+					   <View style={{flexDirection: 'row', paddingHorizontal: 20, justifyContent: 'space-between'}}>
+					   	<TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')} style={{width: 80}}>
+					   		<Text style={styles.recSenha}>{t("Esqueci minha senha")}</Text>
+					   	</TouchableOpacity>
+					   	<GoButton width={140} title={"Acessar"} press={handleSubmit} valid={!isValid}/>
+					   </View>
+					</View>
+					</>
+	         )}
+	      </Formik>
 			<View style={{backgroundColor: Background}}>
 				<View style={{height: 2, marginHorizontal: 20, backgroundColor: "#3C3C3C"}} />
 			</View>
@@ -202,7 +237,13 @@ const styles = StyleSheet.create({
 		color: "white",
 		textDecorationLine: 'underline',
 		fontWeight: 'bold'
-	}
+	},
+	erros: { 
+      fontSize: 12, 
+      color: 'red', 
+      fontFamily: Descricao,
+      paddingHorizontal: 20
+   },
 })
 
 export default index
