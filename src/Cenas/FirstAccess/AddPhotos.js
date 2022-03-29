@@ -73,20 +73,19 @@ const AddPhotos = props => {
   const requestCameraPermission = async () => {
     if (Platform.OS === 'android') {
       try {
-        const granted = await PermissionsAndroid.request(
-          PermissionsAndroid.PERMISSIONS.CAMERA,
-          {
-            title: 'Camera Permission',
-            message: 'App needs camera permission',
-          },
-        );
-        // If CAMERA Permission is granted
-        return granted === PermissionsAndroid.RESULTS.GRANTED;
+         const granted = await PermissionsAndroid.request(
+            PermissionsAndroid.PERMISSIONS.CAMERA,
+            {
+               title: 'Camera Permission',
+               message: 'App needs camera permission',
+            },
+         );
+         // If CAMERA Permission is granted
+         return granted === PermissionsAndroid.RESULTS.GRANTED;
       } catch (err) {
-        console.warn(err);
         return false;
       }
-    } else return true;
+      } else return true;
   };
 
   const requestExternalWritePermission = async () => {
